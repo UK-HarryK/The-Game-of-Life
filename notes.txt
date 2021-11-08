@@ -1,0 +1,17 @@
+Conway's Game of Life notes 
+
+Birth rule:- To be born, a dead cell needs to have three live neighbours
+Life rule:- Any live cell with two or three neighbours survives
+Death rule:- Any live cell with <2 neighbours dies, any live cells with >3 neighbours dies 
+
+start at generation zero, allow the user to create their own pattern of cells 
+
+define a class for the cells, maybe with properties that determine if the cells have any neighbouring live cells?
+Cell pattern
+1 2 3
+4 c 5
+6 7 8
+Array of 8 boolean values the determine if a neighbouring cell is alive
+
+
+
