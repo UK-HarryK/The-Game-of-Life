@@ -1,11 +1,11 @@
 "use strict"
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-let grid;
+const canvas:HTMLCanvasElement = document.getElementById("canvas")!;
+const ctx:CanvasRenderingContext2D = canvas.getContext("2d")!;
+let grid:Array<Array<Cell>>;
 let res = 10;
 
-function create2DArray(length){
+function create2DArray(length:number){
     grid = new Array(length);
     for(let i=0; i<grid.length; i++){
         grid[i] = new Array(length);
@@ -23,6 +23,8 @@ function render(){
     }
 }
 class Cell{
+    alive:boolean
+    neighboursSum:number
     constructor(){
         this.alive = false
         this.neighboursSum = 0
@@ -80,9 +82,9 @@ function nextGeneration(){
             }else{
                 nextGenGrid[i][j].birth()
             }
+            let x:number = i*res
+            let y:number = j*res
             if(nextGenGrid[i][j].alive){
-                let x = i*res
-                let y = j*res
                 ctx.fillRect(x, y, res-1, res-1)
             }else{
                 ctx.clearRect(x, y, res-1, res-1)
