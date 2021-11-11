@@ -55,52 +55,63 @@ function populateGrid(array){
                 }
             }
         }
-    }
-
+}
+//
+///
+////
+/////
+//////
 function findNeighbours(array, x, y){
     let sum = 0;
-    for(let i=-1; i<2; i++){
-        for(let j=-1; j<2; j++){
-            let cell = array[x + i][y + j]
-            if(cell.alive){
-                if(!(i == x && j == y)){
-                    sum++
-                }
-            }
-        }
+    
+    if(array[x - 1][y - 1].alive){
+        sum++
+    }
+    if(array[x][y - 1].alive){
+        sum++
+    }
+    if(array[x + 1][y - 1].alive){
+        sum++
+    }
+    if(array[x - 1][y].alive){
+        sum++
+    }
+    if(array[x + 1][y].alive){
+        sum++
+    }
+    if(array[x - 1][y + 1].alive){
+        sum++
+    }
+    if(array[x][y + 1].alive){
+        sum++
+    }
+    if(array[x + 1][y + 1].alive){
+        sum++
     }
     return sum
 }
 
 function nextGeneration(oldGrid){
-    let nextGenGrid = create2DArray(oldGrid.length)
-    for(let i=1; i<nextGenGrid.length-1; i++){
-        for(let j=1; j<nextGenGrid[i].length-1; j++){
-            oldGrid[i][j].neighboursSum = findNeighbours(oldGrid, i, j)
-        }
-    }
-    for(let i=0; i<nextGenGrid.length; i++){
-        for(let j=0; j<nextGenGrid[i].length; j++){
-            if(oldGrid[i][j].alive){
-                if(oldGrid[i][j].neighboursSum == 2 || oldGrid[i][j].neighboursSum == 3){
-                    nextGenGrid[i][j].birth()
-                }else{
-                    nextGenGrid[i][j].kill()
-                }
-            }else{
-                if(oldGrid[i][j].neighboursSum == 3){
-                    nextGenGrid[i][j].birth()
-                }else{
-                    nextGenGrid[i][j].kill()
-                }
+    let nextGrid = create2DArray(oldGrid.length)
+    for(let i=1; i<nextGrid.length-1; i++){
+        for(let j=1; j<nextGrid[i].length-1; j++){
+            let neighboursSum = findNeighbours(oldGrid, i, j)
+            let oldCell = oldGrid[i][j]
+            let newCell = nextGrid[i][j]
+            if((!oldCell.alive) && neighboursSum === 3){
+                newCell.birth()
+            }else if(oldCell.alive && (neighboursSum < 2 || neighboursSum > 3)){
+                newCell.kill()
             }
-            oldGrid[i][j].resetNeigbours()
+            else{
+                newCell.alive = oldCell.alive
+            }
         }
     }
-    render(nextGenGrid)
-    return nextGenGrid
+    render(nextGrid)
+    return nextGrid
 }
-let grid = create2DArray(25)
+let grid = create2DArray(50)
 populateGrid(grid)
 render(grid)
 setInterval(()=>grid = nextGeneration(grid), 1000)
