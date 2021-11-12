@@ -49,7 +49,6 @@ class Cell{
 function populateGrid(array){
     for(let i=0; i<array.length; i++){
         for(let j=0; j<array[i].length; j++){
-            array[i][j] = new Cell()
             if(Math.random()<0.5){
                 array[i][j].birth()
                 }
@@ -63,29 +62,44 @@ function populateGrid(array){
 //////
 function findNeighbours(array, x, y){
     let sum = 0;
-    
-    if(array[x - 1][y - 1].alive){
+    let left = x - 1 
+    let right = x + 1
+    let top = y - 1 
+    let bottom = y + 1
+    if(left < 0){
+        left = array.length - 1
+    }
+    if(right > array.length - 1){
+        right = 0
+    }
+    if(top < 0){
+        top = array[x].length -1
+    }
+    if(bottom > array[x].length - 1){
+        bottom = 0
+    }
+    if(array[left][top].alive){
         sum++
     }
-    if(array[x][y - 1].alive){
+    if(array[x][top].alive){
         sum++
     }
-    if(array[x + 1][y - 1].alive){
+    if(array[right][top].alive){
         sum++
     }
-    if(array[x - 1][y].alive){
+    if(array[left][y].alive){
         sum++
     }
-    if(array[x + 1][y].alive){
+    if(array[right][y].alive){
         sum++
     }
-    if(array[x - 1][y + 1].alive){
+    if(array[left][bottom].alive){
         sum++
     }
-    if(array[x][y + 1].alive){
+    if(array[x][bottom].alive){
         sum++
     }
-    if(array[x + 1][y + 1].alive){
+    if(array[right][bottom].alive){
         sum++
     }
     return sum
@@ -93,8 +107,8 @@ function findNeighbours(array, x, y){
 
 function nextGeneration(oldGrid){
     let nextGrid = create2DArray(oldGrid.length)
-    for(let i=1; i<nextGrid.length-1; i++){
-        for(let j=1; j<nextGrid[i].length-1; j++){
+    for(let i=0; i<nextGrid.length; i++){
+        for(let j=0; j<nextGrid[i].length; j++){
             let neighboursSum = findNeighbours(oldGrid, i, j)
             let oldCell = oldGrid[i][j]
             let newCell = nextGrid[i][j]
@@ -111,9 +125,7 @@ function nextGeneration(oldGrid){
     render(nextGrid)
     return nextGrid
 }
-let grid = create2DArray(50)
+let grid = create2DArray(100)
 populateGrid(grid)
 render(grid)
-setInterval(()=>grid = nextGeneration(grid), 1000)
-
-
+setInterval(()=>grid = nextGeneration(grid), 100)
